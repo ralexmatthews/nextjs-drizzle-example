@@ -6,8 +6,6 @@ import { revalidatePath } from "next/cache";
 import Table from "@/components/table";
 
 export default async function Home() {
-  // const users = await db.query.users.findMany();
-  // const tasks = await db.query.tasks.findMany();
   const users = await db
     .select({
       id: usersTable.id,
@@ -31,7 +29,7 @@ export default async function Home() {
       .set({ completed: complete })
       .where(eq(tasksTable.id, taskId));
 
-    revalidatePath("/");
+    revalidatePath("/", "layout");
   };
 
   return (
@@ -46,6 +44,7 @@ export default async function Home() {
             <tr className="bg-neutral text-neutral-content">
               <th>Id</th>
               <th>Title</th>
+              <th>Assigned User</th>
               <th></th>
             </tr>
           </thead>
@@ -54,6 +53,7 @@ export default async function Home() {
               <tr key={row.tasks.id}>
                 <td>{row.tasks.id}</td>
                 <td>{row.tasks.title}</td>
+                <td>{row.users?.name ?? "Unassigned"}</td>
                 <td>
                   <MarkAsCompleteButton
                     taskId={row.tasks.id}
