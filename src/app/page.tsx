@@ -1,10 +1,9 @@
-import CheckIcon from "@/components/check_icon";
-import XIcon from "@/components/x_icon";
-import { db } from "../../db";
-import { users as usersTable, tasks as tasksTable } from "../../db/schema";
+import { db } from "@/db";
+import { users as usersTable, tasks as tasksTable } from "@/db/schema";
 import { count, eq } from "drizzle-orm";
 import MarkAsCompleteButton from "@/components/mark_as_complete_button";
 import { revalidatePath } from "next/cache";
+import Table from "@/components/table";
 
 export default async function Home() {
   // const users = await db.query.users.findMany();
@@ -38,9 +37,11 @@ export default async function Home() {
   return (
     <main className="max-w-prose mx-auto space-y-8">
       <h1 className="text-xl text-primary">Overview</h1>
+      <div className="divider" />
+
       <div className="space-y-4">
         <h2 className="text-primary">Tasks</h2>
-        <table className="table">
+        <Table>
           <thead>
             <tr>
               <th>Id</th>
@@ -63,11 +64,12 @@ export default async function Home() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </div>
+      <div className="divider" />
       <div className="space-y-4">
         <h2 className="text-primary">Users</h2>
-        <table className="table">
+        <Table>
           <thead>
             <tr>
               <th>Id</th>
@@ -84,7 +86,7 @@ export default async function Home() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </div>
     </main>
   );
