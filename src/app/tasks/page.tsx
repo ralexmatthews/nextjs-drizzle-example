@@ -26,7 +26,7 @@ const TasksPage = () => {
 
   return (
     <main className="max-w-prose mx-auto space-y-8">
-      <h2 className="text-xl">Users</h2>
+      <h2 className="text-xl text-primary">Tasks</h2>
       <table className="table">
         <thead>
           <tr>

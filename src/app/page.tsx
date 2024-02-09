@@ -14,9 +14,9 @@ export default function Home() {
 
   return (
     <main className="max-w-prose mx-auto space-y-8">
-      <h1 className="text-xl">Overview</h1>
+      <h1 className="text-xl text-primary">Overview</h1>
       <div className="space-y-4">
-        <h2>Tasks</h2>
+        <h2 className="text-primary">Tasks</h2>
         <table className="table">
           <thead>
             <tr>
@@ -44,7 +44,7 @@ export default function Home() {
         </table>
       </div>
       <div className="space-y-4">
-        <h2>Users</h2>
+        <h2 className="text-primary">Users</h2>
         <table className="table">
           <thead>
             <tr>
