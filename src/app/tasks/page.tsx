@@ -53,7 +53,7 @@ const TasksPage = async () => {
         <h2 className="text-xl text-primary">Tasks</h2>
         <Table>
           <thead>
-            <tr>
+            <tr className="bg-neutral text-neutral-content">
               <th>Id</th>
               <th>Title</th>
               <th>Assigned User</th>

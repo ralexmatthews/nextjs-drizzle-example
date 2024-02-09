@@ -25,7 +25,7 @@ const TaskForm = ({
         />
       </div>
       <button
-        className="btn btn-primary w-full"
+        className="btn btn-neutral w-full"
         disabled={isSaving || !title}
         onClick={() => {
           setIsSaving(true);

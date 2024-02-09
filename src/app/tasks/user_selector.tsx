@@ -40,8 +40,9 @@ const UserSelector = ({
           const id = e.target.value === NONE ? null : Number(e.target.value);
           setSelectedUserId(id);
         }}
+        value={selectedUserId ?? NONE}
       >
-        <option value={NONE} disabled selected>
+        <option value={NONE} disabled>
           None
         </option>
         {users.map((user) => (

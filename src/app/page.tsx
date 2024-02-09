@@ -43,7 +43,7 @@ export default async function Home() {
         <h2 className="text-primary">Tasks</h2>
         <Table>
           <thead>
-            <tr>
+            <tr className="bg-neutral text-neutral-content">
               <th>Id</th>
               <th>Title</th>
               <th></th>
@@ -71,7 +71,7 @@ export default async function Home() {
         <h2 className="text-primary">Users</h2>
         <Table>
           <thead>
-            <tr>
+            <tr className="bg-neutral text-neutral-content">
               <th>Id</th>
               <th>Name</th>
               <th>Number Of Assigned Tasks</th>

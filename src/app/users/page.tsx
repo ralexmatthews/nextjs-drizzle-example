@@ -21,7 +21,7 @@ const UsersPage = async () => {
         <h2 className="text-xl text-primary">Users</h2>
         <Table>
           <thead>
-            <tr>
+            <tr className="bg-neutral text-neutral-content">
               <th>Id</th>
               <th>Name</th>
             </tr>
