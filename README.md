@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js-Drizzle Example
 
-## Getting Started
+This is a toy app that uses Next.js 14 and Drizzle ORM to make a very simple task manager. This repo was more than anything meant to be a learning exercise for me to learn Drizzle.
 
-First, run the development server:
+## Next.js
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This app uses the Next.js app router, and has 3 pages:
+
+- `/`: just an overview of the task list and users
+- `/users`: A list of the users with the ability to add users
+- `/tasks`: A list of the tasks with the ability to add tasks, assign tasks to users, and mark tasks as completed
+
+All of these routes are server components and the mutations are implemented using server actions, which use Drizzle.
+
+### Styling
+
+This app also uses TailwindCSS and DaisyUI for the styling. It is just very basic out-of-the-box styling options from DaisyUI.
+
+## Drizzle
+
+This app uses Drizzle as an ORM. All of the database stuff live in `./src/db`. The general idea is that you define the schema of the database in `./src/db/schema.ts` and Drizzle will create TypeScript types from the schema.
+
+It also has commands to run migrations. Those are:
+
+```shell
+pnpm generate-migrations # create SQL statements in `./drizzle`
+pnpm migrate # run the migrations from that directory
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+From there, the index file exports a database that can be used in the application for the selects and updates and whatnot.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**NOTE:** Currently the credentials for my docker MySQL database are hard-coded in the connection file. In real applications, you should have these in a .env file or similar. I only did that because I am lazy and didn't want to set that up.
