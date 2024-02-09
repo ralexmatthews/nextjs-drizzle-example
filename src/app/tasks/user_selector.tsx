@@ -10,12 +10,14 @@ type User = {
 const NONE = "∂none";
 
 const UserSelector = ({
+  taskId,
   user,
   setUser,
   users,
 }: {
+  taskId: number;
   user: number | null;
-  setUser: (user: number | null) => Promise<void>;
+  setUser: (taskId: number, user: number | null) => Promise<void>;
   users: User[];
 }) => {
   const [selectedUserId, setSelectedUserId] = React.useState<number | null>(
@@ -26,7 +28,7 @@ const UserSelector = ({
 
   React.useEffect(() => {
     if (selectedUserId !== user) {
-      setUser(selectedUserId).then(() => openToast());
+      setUser(taskId, selectedUserId).then(() => openToast());
     }
   }, [selectedUserId]);
 

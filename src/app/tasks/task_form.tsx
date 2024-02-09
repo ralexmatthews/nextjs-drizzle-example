@@ -30,7 +30,10 @@ const TaskForm = ({
         onClick={() => {
           setIsSaving(true);
           saveTask(title)
-            .then(() => openToast())
+            .then(() => {
+              openToast();
+              setTitle("");
+            })
             .finally(() => setIsSaving(false));
         }}
       >

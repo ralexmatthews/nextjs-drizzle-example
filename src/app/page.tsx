@@ -1,16 +1,39 @@
 import CheckIcon from "@/components/check_icon";
 import XIcon from "@/components/x_icon";
+import { db } from "../../db";
+import { users as usersTable, tasks as tasksTable } from "../../db/schema";
+import { count, eq } from "drizzle-orm";
+import MarkAsCompleteButton from "@/components/mark_as_complete_button";
+import { revalidatePath } from "next/cache";
 
-export default function Home() {
-  const tasks: {
-    id: number;
-    title: string;
-    completed: boolean;
-    assignedUser: number | null;
-  }[] = [{ id: 0, title: "Research ORM", completed: false, assignedUser: 0 }];
-  const users: { id: number; name: string; assignedTasks: number }[] = [
-    { id: 0, name: "Alex", assignedTasks: 1 },
-  ];
+export default async function Home() {
+  // const users = await db.query.users.findMany();
+  // const tasks = await db.query.tasks.findMany();
+  const users = await db
+    .select({
+      id: usersTable.id,
+      name: usersTable.name,
+      assignedTasks: count(tasksTable.assignedUserId),
+    })
+    .from(usersTable)
+    .leftJoin(tasksTable, eq(usersTable.id, tasksTable.assignedUserId))
+    .groupBy(usersTable.id);
+
+  const tasks = await db
+    .select()
+    .from(tasksTable)
+    .leftJoin(usersTable, eq(tasksTable.assignedUserId, usersTable.id));
+
+  const setTaskComplete = async (taskId: number, complete: boolean) => {
+    "use server";
+
+    await db
+      .update(tasksTable)
+      .set({ completed: complete })
+      .where(eq(tasksTable.id, taskId));
+
+    revalidatePath("/");
+  };
 
   return (
     <main className="max-w-prose mx-auto space-y-8">
@@ -22,21 +45,20 @@ export default function Home() {
             <tr>
               <th>Id</th>
               <th>Title</th>
-              <th>Completed</th>
-              <th>Assigned User</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task) => (
-              <tr key={task.id}>
-                <td>{task.id}</td>
-                <td>{task.title}</td>
-                <td className={task.completed ? "text-green-500" : ""}>
-                  {task.completed ? <CheckIcon /> : <XIcon />}
-                </td>
+            {tasks.map((row) => (
+              <tr key={row.tasks.id}>
+                <td>{row.tasks.id}</td>
+                <td>{row.tasks.title}</td>
                 <td>
-                  {users.find((user) => user.id === task.assignedUser)?.name ??
-                    "None"}
+                  <MarkAsCompleteButton
+                    taskId={row.tasks.id}
+                    isComplete={row.tasks.completed}
+                    toggleComplete={setTaskComplete}
+                  />
                 </td>
               </tr>
             ))}
@@ -54,11 +76,11 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.assignedTasks}</td>
+            {users.map((row) => (
+              <tr key={row.id}>
+                <td>{row.id}</td>
+                <td>{row.name}</td>
+                <td>{row.assignedTasks}</td>
               </tr>
             ))}
           </tbody>

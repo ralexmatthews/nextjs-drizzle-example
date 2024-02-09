@@ -29,7 +29,10 @@ const UserForm = ({
         onClick={() => {
           setIsSaving(true);
           saveUser(name)
-            .then(() => openToast())
+            .then(() => {
+              openToast();
+              setName("");
+            })
             .finally(() => setIsSaving(false));
         }}
       >

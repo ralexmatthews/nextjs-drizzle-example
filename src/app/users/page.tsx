@@ -1,17 +1,17 @@
 import { revalidatePath } from "next/cache";
 import UserForm from "./user_form";
+import { db } from "../../../db";
+import { users as usersTable } from "../../../db/schema";
 
-const UsersPage = () => {
-  const users: { id: number; name: string }[] = [{ id: 0, name: "Alex" }];
+const UsersPage = async () => {
+  const users = await db.query.users.findMany();
 
   const saveUser = async (name: string) => {
     "use server";
-    return new Promise<void>((res) => {
-      setTimeout(() => {
-        revalidatePath("/users");
-        res();
-      }, 2000);
-    });
+
+    await db.insert(usersTable).values({ name });
+
+    revalidatePath("/users");
   };
 
   return (
